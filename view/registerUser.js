@@ -1,4 +1,4 @@
-module.exports.registerUser = function(deptObj) {
+module.exports.registerUser = function(navBar, menuLink, deptObj) {
     let options = '';
     for (deptItem of deptObj) {
         options += `<option value="${deptItem.did}">${deptItem.name}</option>`;
@@ -19,46 +19,10 @@ module.exports.registerUser = function(deptObj) {
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <img src="new3.png" class="d-inline-block align-top" alt="">&nbsp;&nbsp;&nbsp;
-            <ul class="nav nav-pills mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">로그아웃</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> </a>
-                </li>
-            </ul>
-            <div class="navbar-text">
-                <p>날씨</p>
-                <p>관리자님 환영합니다.</p>
-            </div>
-        </nav>
+        ${navBar}
         <div class="row" style="margin-top: 30px">
             <div class="col-2">
-                <ul class="nav nav-pills flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sensor">센서</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/actuator">액츄에이터</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            사용자
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">등록(C)</a>
-                            <a class="dropdown-item" href="/user/list">조회(R)</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
-                    </li>
-                </ul>
+                ${menuLink}
             </div>
             <div class="col-10">
                 <div class="row" style="margin-left: 10px">
@@ -73,11 +37,11 @@ module.exports.registerUser = function(deptObj) {
                                     <td><input type="text" class="form-control" id="uid" name="uid"></td>
                                 </tr>
                                 <tr>
-                                    <td><i class="fas fa-key">&nbsp;</span>패스워드</td>
+                                    <td><span style="color:blue"></span>패스워드</td>
                                     <td><input type="password" class="form-control" id="pswd" name="pswd"></td>
                                 </tr>
                                 <tr>
-                                    <td><i class="fas fa-key">&nbsp;</span>패스워드 확인</td>
+                                    <td><span style="color:blue"></span>패스워드 확인</td>
                                     <td><input type="password" class="form-control" id="pswd2" name="pswd2"></td>
                                 </tr>
                                 <tr>

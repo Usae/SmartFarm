@@ -1,4 +1,7 @@
 const sqlite3 = require('sqlite3').verbose(); 
+const template = require('./view/template')
+// const apiURI = 'http://api.openweathermap.org/data/2.5/weather?q=Yongin,kr&units=metric&appid=';
+// const apiKey = '1deae3f5f3c9a8aa2485baa5dc8a8858';
 
 module.exports = {
     getAllDepts: function(callback) {
@@ -84,9 +87,9 @@ module.exports = {
     },
     deleteUser: function(uid, callback) {
         let db = new sqlite3.Database("db/smartfarm.db");
-        let sql = `DELETE FROM user SET WHERE uid=?`;
+        let sql = `DELETE FROM user WHERE uid=?`;
         let stmt = db.prepare(sql);
-        stmt.run(name, deptId, tel, uid, function(err) {
+        stmt.run(uid, function(err) {
             if (err) {
                 console.error('deleteUser DB 오류', err);
                 return;

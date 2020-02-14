@@ -1,13 +1,12 @@
-module.exports.listUser = function(userObj) {
+module.exports.listUser = function(navBar, menuLink, userObj) {
     let users = '';
     for (user of userObj) {
         users += `
             <tr>
                 <td>${user.uid}</td>
-                <td><a href="${user.name}.html">${user.name}</a></td>
+                <td><a href="/user/${user.name}.html">${user.name}</a></td>
                 <td>${user.deptName}</td><td>${user.tel}</td><td>${user.ts}</td>
                 <td><a href="/user/update/uid/${user.uid}"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
-                    <a href="/user/password/uid/${user.uid}"><i class="fas fa-key"></i>&nbsp;&nbsp;
                     <a href="/user/delete/uid/${user.uid}"><i class="fas fa-trash-alt"></i></td>
             </tr>`;
     }
@@ -27,46 +26,10 @@ module.exports.listUser = function(userObj) {
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <img src="new3.png" class="d-inline-block align-top" alt="">&nbsp;&nbsp;&nbsp;
-            <ul class="nav nav-pills mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">로그아웃</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> </a>
-                </li>
-            </ul>
-            <div class="navbar-text">
-                <p>날씨</p>
-                <p>관리자님 환영합니다.</p>
-            </div>
-        </nav>
+        ${navBar}
         <div class="row" style="margin-top: 30px">
             <div class="col-2">
-                <ul class="nav nav-pills flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sensor">센서</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/actuator">액츄에이터</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            사용자
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/user/register">등록(C)</a>
-                            <a class="dropdown-item" href="#">조회(R)</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
-                    </li>
-                </ul>
+                ${menuLink}
             </div>
             <div class="col-10">
                 <div class="row" style="margin-left: 10px">
