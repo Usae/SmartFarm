@@ -95,11 +95,37 @@ router.get('/update/uid/:uid', function(req, res) {     // 본인 것만 수정�
 });
 router.post('/update', function(req, res) {
     let uid = req.body.uid;
+    let oldPswd = req.body.oldPswd;
+    let changePswd = req.body.changePswd;
+    let pswd = req.body.pswd;
+    let pswd2 = req.body.pswd2;
     let name = req.body.name;
     let deptId = parseInt(req.body.dept);
     let tel = req.body.tel;
-    dbModule.updateUser(uid, name, deptId, tel, function() {
-        res.redirect('/user/list');
+
+    dbModule.getUserInfo(uid, function(user) {
+        if (changePswd === undefined) {         // 패스워드 변경 체크박스가 uncheck 되었을 때
+            dbModule.updateUser(uid, user.password, name, deptId, tel, function() {
+                //console.log("Redirect to /user/list");
+                res.redirect('/user/list');
+            });
+        } else {    // check 되었을 때
+            if (oldPswd !== user.password) {    // 현재 패스워드가 틀렸을 때
+                let html = alert.alertMsg(`현재 패스워드가 틀립니다.`, `/user/update/uid/${uid}`);
+                res.send(html);
+            } else if (pswd.length < 4) {        // 입력한 패스워드의 길이가 4 미만일 때
+                let html = alert.alertMsg(`신규 입력한 패스워드의 길이가 작습니다.`, `/user/update/uid/${uid}`);
+                res.send(html);
+            } else if (pswd !== pswd2) {        // 입력한 패스워드가 다를 때
+                let html = alert.alertMsg(`신규 입력한 패스워드가 다릅니다.`, `/user/update/uid/${uid}`);
+                res.send(html);
+            } else {            // 모든 조건을 만족시켰을 때
+                dbModule.updateUser(uid, pswd, name, deptId, tel, function() {
+                    //console.log("Redirect to /user/list finally");
+                    res.redirect('/user/list');
+                });
+            }
+        }
     });
 });
 router.get('/delete/uid/:uid', function(req, res) {     // 관리자로 로그인해야 할 수 있음.

@@ -41,6 +41,19 @@ module.exports.updateUser = function(navBar, menuLink, depts, user) {
                                     <td>${user.uid}</td>
                                 </tr>
                                 <tr>
+                                    <td>현재 패스워드</td>
+                                    <td><input type="password" class="form-control" name="oldPswd">
+                                        <input type="checkbox" value="1" name="changePswd"> 패스워드 변경시 체크</td>
+                                </tr>
+                                <tr>
+                                    <td>신규 패스워드</td>
+                                    <td><input type="password" class="form-control" name="pswd"></td>
+                                </tr>
+                                <tr>
+                                    <td>신규 패스워드 확인</td>
+                                    <td><input type="password" class="form-control" name="pswd2"></td>
+                                </tr>
+                                <tr>
                                     <td>이름</td>
                                     <td><input type="text" class="form-control" name="name" value="${user.name}"></td>
                                 </tr>
