@@ -3,10 +3,7 @@
 #define ECHO_PIN  10
 #define TRIG_PIN  11
 #define CDS_PIN   A0
-// for DHT11, 
-//      VCC: 5V or 3V
-//      GND: GND
-//      DATA: 2
+
 DHT dht(DHT_PIN, DHT11);
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
