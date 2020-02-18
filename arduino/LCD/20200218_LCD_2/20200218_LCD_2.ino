@@ -13,6 +13,8 @@
 #define TRIG_PIN  11
 #define CDS_PIN   A0
 
+
+
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 DHT dht(DHT_PIN, DHT11);  // Adafruit sensor library
 void readSensors();
