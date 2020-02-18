@@ -1,6 +1,6 @@
 const request = require('request');
 const template = require('./view/template');
-const apiURI = 'http://api.openweathermap.org/data/2.5/weather?q=Yongin,kr&units=metric&appid=';
+const apiURI = 'http://api.openweathermap.org/data/2.5/weather?q=Incheon,kr&units=metric&appid=';
 const apiKey = '1deae3f5f3c9a8aa2485baa5dc8a8858';
  
 module.exports = {

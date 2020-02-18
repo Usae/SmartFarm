@@ -97,5 +97,31 @@ module.exports = {
         });
         stmt.finalize();
         db.close();
+    },
+    getCurrentSensor: function(callback) {
+        let db = new sqlite3.Database("db/smartfarm.db");
+        //let sql = `SELECT l.uid, l.name, r.name deptName, l.tel, strftime('%Y-%m-%d', regDate, 'localtime') ts FROM user l join dept r on l.deptId = r.did where uid=?`;
+        let sql = `SELECT temperature, humidity, cds, distance, strftime('%Y-%m-%d %H:%M:%S', sensingTime, 'localtime') sTime, uid FROM sensor ORDER BY sid DESC LIMIT 1`;
+        db.each(sql, function(err, row) {
+            if (err) {
+                console.error('getCurrentSensor DB 오류', err);
+                return;
+            }
+            callback(row);
+        });
+        db.close();
+    },
+    getCurrentactuator: function(callback) {
+        let db = new sqlite3.Database("db/smartfarm.db");
+        //let sql = `SELECT l.uid, l.name, r.name deptName, l.tel, strftime('%Y-%m-%d', regDate, 'localtime') ts FROM user l join dept r on l.deptId = r.did where uid=?`;
+        let sql = `SELECT redLED, greenLED, blueLED, relay, strftime('%Y-%m-%d %H:%M:%S', actionTime, 'localtime') aTime, reason, uid FROM actuator ORDER BY aid DESC LIMIT 1`;
+        db.each(sql, function(err, row) {
+            if (err) {
+                console.error('getCurrentSensor DB 오류', err);
+                return;
+            }
+            callback(row);
+        });
+        db.close();
     }
 }
