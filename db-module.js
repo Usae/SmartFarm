@@ -103,7 +103,21 @@ module.exports = {
         let stmt = db.prepare(sql);
         stmt.run(temp, humid, cds, dist, uid, function(err) {
             if (err) {
-                console.error('insertSensor DB 오류', err);
+                console.error('insertSensor DB 오류', err); 
+                return;
+            }
+            callback();
+        });
+        stmt.finalize();
+        db.close();
+    },
+    insertActuator: function(redLED, greenLED, blueLED, relay , reason, uid, callback) {
+        let db = new sqlite3.Database("db/smartfarm.db");
+        let sql = `INSERT INTO actuator(redLED, greenLED, blueLED, relay , reason, uid) values (?,?,?,?,?,?)`;
+        let stmt = db.prepare(sql);
+        stmt.run(redLED, greenLED, blueLED, relay , reason, uid, function(err) {
+            if (err) {
+                console.error('insertActuator DB 오류', err);
                 return;
             }
             callback();

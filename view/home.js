@@ -15,8 +15,37 @@ module.exports.home = function(navBar, menuLink, sensor, actuator) {
     let aTime = actuator.aTime;
     let reason = actuator.reason;
     let aUid = actuator.uid;
+
+    const TEMP_LOW = 18.0;
+    const TEMP_HIGH = 30.0;
+    const HUMID_LOW = 20.0;
+    const HUMID_HIGH = 28.0;
+    const CDS_LOW = 60.0;
+    const CDS_HIGH = 200.0;
+    const DIST_LOW = 30.0;
+    const DIST_HIGH = 90.0;
+
+    if (temp < TEMP_LOW) bgtemp= "bg-secondary";
+    else if (temp > TEMP_HIGH ) bgtemp = "bg-danger";
+    else bgtemp = "bg-warning";
+
+    if (humid < HUMID_LOW) bghumid= "bg-secondary";
+    else if (humid > HUMID_HIGH ) bghumid = "bg-danger";
+    else bghumid = "bg-warning";
+
+    if (cds < CDS_LOW) bgcds= "bg-secondary";
+    else if (cds > CDS_HIGH ) bgcds = "bg-danger";
+    else bgcds = "bg-warning";
+
+    if (dist < DIST_LOW) bgdist= "bg-secondary";
+    else if (dist > DIST_HIGH ) bgdist = "bg-danger";
+    else bgdist = "bg-warning";
+
     return `
-<html>
+
+    
+<!DOCTYPE html>
+<html lang="ko">
 <head>
 	${header}
 </head>
@@ -47,7 +76,7 @@ module.exports.home = function(navBar, menuLink, sensor, actuator) {
                             <td>0 ~ 40℃</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: ${temp/40*100}%" aria-valuemin="0" aria-valuemax="40">${temp}</div>
+                                    <div class="progress-bar ${bgtemp}" role="progressbar" style="width: ${temp/40*100}%" aria-valuemin="0" aria-valuemax="40">${temp}</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>
@@ -56,25 +85,25 @@ module.exports.home = function(navBar, menuLink, sensor, actuator) {
                             <td>0 ~ 60%</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: ${humid/60*100}%" aria-valuemin="0" aria-valuemax="60">${humid}</div>
+                                    <div class="progress-bar ${bghumid}" role="progressbar" style="width: ${humid/60*100}%" aria-valuemin="0" aria-valuemax="60">${humid}</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>
                         <tr>
                             <td><i class="far fa-lightbulb"></i>&nbsp;&nbsp;조도</td>
-                            <td>0 ~ 100</td>
+                            <td>0 ~ 1000</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: ${cds/100*100}%" aria-valuemin="0" aria-valuemax="100">${cds}</div>
+                                    <div class="progress-bar ${bgcds}" role="progressbar" style="width: ${cds/1000*100}%" aria-valuemin="0" aria-valuemax="1000">${cds}</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>
                         <tr>
                             <td><i class="fas fa-ruler-vertical"></i>&nbsp;&nbsp;거리</td>
-                            <td>0 ~ 50cm</td>
+                            <td>0 ~ 200cm</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar bg-dark" role="progressbar" style="width: ${dist/50*100}%" aria-valuemin="0" aria-valuemax="100">${dist}</div>
+                                    <div class="progress-bar ${bgdist}" role="progressbar" style="width: ${dist/200*100}%" aria-valuemin="0" aria-valuemax="200">${dist}</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>

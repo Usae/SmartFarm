@@ -9,7 +9,6 @@ module.exports.actuator = function(navBar, menuLink, actuator) {
     let aTime = actuator.aTime;
     let reason = actuator.reason;
     let aUid = actuator.uid;
-
     let radio = '';
     if (relay == 0) 
         radio = `<input type="radio" name="relay" value="0" checked>&nbsp;OFF&nbsp;&nbsp;&nbsp;&nbsp;
@@ -18,8 +17,8 @@ module.exports.actuator = function(navBar, menuLink, actuator) {
         radio = `<input type="radio" name="relay" value="0">&nbsp;OFF&nbsp;&nbsp;&nbsp;&nbsp;
                  <input type="radio" name="relay" value="1" checked>&nbsp;ON<br>`;    
 	return`
-
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
 	${header}
 </head>
