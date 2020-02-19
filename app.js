@@ -40,6 +40,33 @@ app.get('/home', function(req, res) {
     }
 });
 
+app.get('/sensor', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let uid = req.session.userId;
+        // Arduino 측정값 구하기
+        let temp = 23;
+        let humid = 34;
+        let cds = 70;
+        let dist = 14.6;
+        // DB에 등록하기
+        dbModule.insertSensor(temp, humid, cds, dist, uid, function() {
+            // 화면에 보여주기
+            dbModule.getCurrentSensor(function(sensor) {
+                wm.getWeather(function(weather) {
+                    let navBar = template.navBar(false, weather, req.session.userName);
+                    let menuLink = template.menuLink(1);
+                    let view = require('./view/sensor');
+                    let html = view.sensor(navBar, menuLink, sensor);
+                    res.send(html);
+                });
+            });
+        });
+    }
+});
+
 app.get('/weather', function(req, res) {
     if (req.session.userId === undefined) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');

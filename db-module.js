@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3').verbose(); 
-const template = require('./view/template')
 
 
 module.exports = {
@@ -91,6 +90,20 @@ module.exports = {
         stmt.run(uid, function(err) {
             if (err) {
                 console.error('deleteUser DB 오류', err);
+                return;
+            }
+            callback();
+        });
+        stmt.finalize();
+        db.close();
+    },
+    insertSensor: function(temp, humid, cds, dist, uid, callback) {
+        let db = new sqlite3.Database("db/smartfarm.db");
+        let sql = `INSERT INTO sensor(temperature, humidity, cds, distance, uid) values (?,?,?,?,?)`;
+        let stmt = db.prepare(sql);
+        stmt.run(temp, humid, cds, dist, uid, function(err) {
+            if (err) {
+                console.error('insertSensor DB 오류', err);
                 return;
             }
             callback();
