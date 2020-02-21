@@ -9,13 +9,25 @@ module.exports.actuator = function(navBar, menuLink, actuator) {
     let aTime = actuator.aTime;
     let reason = actuator.reason;
     let aUid = actuator.uid;
+    
+    let Periodical = '';
+    let Temporary ='';
+    
     let radio = '';
     if (relay == 0) 
         radio = `<input type="radio" name="relay" value="0" checked>&nbsp;OFF&nbsp;&nbsp;&nbsp;&nbsp;
                  <input type="radio" name="relay" value="1">&nbsp;ON<br>`;
     else
         radio = `<input type="radio" name="relay" value="0">&nbsp;OFF&nbsp;&nbsp;&nbsp;&nbsp;
-                 <input type="radio" name="relay" value="1" checked>&nbsp;ON<br>`;    
+                 <input type="radio" name="relay" value="1" checked>&nbsp;ON<br>`;
+    
+
+
+    if(reason=="Periodical"){
+        Periodical = "selected";
+    } else if (reason=="Temporary"){
+        Temporary = "selected";
+    } 
 	return`
 <!DOCTYPE html>
 <html lang="ko">
@@ -65,8 +77,8 @@ module.exports.actuator = function(navBar, menuLink, actuator) {
                         <tr><td style="text-align: center;">변경 사유</td>
                             <td style="text-align: center;">
                                 <select class="form-control" name="reason">
-                                    <option value="Periodical" selected>정기적</option>
-                                    <option value="Temporary">임시적</option>
+                                    <option value="Periodical" ${Periodical}>정기적</option>
+                                    <option value="Temporary" ${Temporary}>임시적</option>
                                 </select>
                             </td></tr>
                         <tr><td colspan="2" style="text-align: center;"><button type="submit" class="btn btn-primary">작동</button></td></tr>

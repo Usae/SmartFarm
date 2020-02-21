@@ -3,6 +3,7 @@ package.json
 package-lock.json
 db/
 sessions/
+apiKey.txt
 
 # Logs
 logs

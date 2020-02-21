@@ -26,14 +26,15 @@ app.use(session({
     saveUninitialized: true,
     store: new FileStore({logFn: function(){}})
 }));
+app.use('/user', userRouter);
 
 app.get('/home', function(req, res) {
     if (req.session.userId === undefined) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        dbModule.getCurrentSensor(function(sensor){ 
-            dbModule.getCurrentactuator(function(actuator){ 
+        dbModule.getCurrentSensor(function(sensor) {
+            dbModule.getCurrentActuator(function(actuator) {
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(true, weather, req.session.userName);
                     let menuLink = template.menuLink(0);
@@ -41,11 +42,10 @@ app.get('/home', function(req, res) {
                     let html = view.home(navBar, menuLink, sensor, actuator);
                     res.send(html);
                 });
-            })
-        })
+            });
+        });
     }
 });
-
 app.get('/sensor', function(req, res) {
     if (req.session.userId === undefined) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
@@ -53,53 +53,56 @@ app.get('/sensor', function(req, res) {
     } else {
         let uid = req.session.userId;
         // Arduino 측정값 구하기
-        sm.readSensor(function(sensor){
-            let temp = sensor.temperature;
-            let humid = sensor.humidity;
-            let cds = sensor.cds;
-            let dist = sensor.distance.toFixed(1);
-            // DB에 등록하기
-            dbModule.insertSensor(temp, humid, cds, dist, uid, function() {
-                // 화면에 보여주기
-                dbModule.getCurrentSensor(function(sensor) {
-                    wm.getWeather(function(weather) {
-                        let navBar = template.navBar(false, weather, req.session.userName);
-                        let menuLink = template.menuLink(1);
-                        let view = require('./view/sensor');
-                        let html = view.sensor(navBar, menuLink, sensor);
-                        res.send(html);
+        try {
+            sm.readSensor(function(sensor) {
+                let temp = sensor.temperature;
+                let humid = sensor.humidity;
+                let cds = sensor.cds;
+                let dist = sensor.distance;
+                dist = dist.toFixed(1);
+                // DB에 등록하기
+                dbModule.insertSensor(temp, humid, cds, dist, uid, function() {
+                    // 화면에 보여주기
+                    dbModule.getCurrentSensor(function(sensor) {
+                        wm.getWeather(function(weather) {
+                            let navBar = template.navBar(false, weather, req.session.userName);
+                            let menuLink = template.menuLink(1);
+                            let view = require('./view/sensor');
+                            let html = view.sensor(navBar, menuLink, sensor);
+                            res.send(html);
+                        });
                     });
                 });
             });
-        });
+        } catch (exception) {
+            console.log(exception);
+        }
     }
 });
-
 app.get('/actuator', function(req, res) {
     if (req.session.userId === undefined) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        dbModule.getCurrentactuator(function(actuator) {
+        dbModule.getCurrentActuator(function(actuator) {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(2);
                 let view = require('./view/actuator');
-                let html = view.actuator(navBar, menuLink, actuator );
+                let html = view.actuator(navBar, menuLink, actuator);
                 res.send(html);
             });
         });
     }
 });
-
-app.post('/actuator' , function(req,res){
+app.post('/actuator', function(req, res) {
     let red = parseInt(req.body.redRange);
     let green = parseInt(req.body.greenRange);
     let blue = parseInt(req.body.blueRange);
-    let relay = parseInt(req.body.realy);
+    let relay = parseInt(req.body.relay);
     let reason = req.body.reason;
     let uid = req.session.userId;
-    
+
     let actuator = new Object();
     actuator.red = red;
     actuator.green = green;
@@ -107,11 +110,38 @@ app.post('/actuator' , function(req,res){
     actuator.relay = relay;
     let jsonData = JSON.stringify(actuator);
 
-    dbModule.insertActuator(red,green,blue,relay,reason,uid, function(){ //DB에 삽입
-        sm.wirteActuator(jsonData,function(){
-            res.redirect('/home');  //홈화면으로보내기
-        });//actuator 구동
+    // DB에 삽입
+    dbModule.insertActuator(red, green, blue, relay, reason, uid, function() {
+        // 액츄에이터 구동
+        sm.writeActuator(jsonData, function() {
+            // home 화면으로 보내기
+            try {
+                res.redirect('/home');
+            } catch (ex) {
+                console.log(ex);
+            }  
+        });
+
     });
+});
+app.get('/index', function(req, res) {
+    res.redirect('/');
+});
+app.get('/gallery', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let view = require('./view/gallery');
+        wm.getWeather(function(weather) {
+            let navBar = template.navBar(false, weather, req.session.userName);
+            let menuLink = template.menuLink(4);
+            wm.weatherObj(function(result) {
+                let html = view.gallery(navBar, menuLink, result);
+                res.send(html);
+            });
+        });
+    }
 });
 
 app.get('/weather', function(req, res) {
@@ -129,12 +159,6 @@ app.get('/weather', function(req, res) {
             });
         });
     }
-});
-
-app.use('/user', userRouter);
-
-app.get('/index', function(req, res) {
-    res.redirect('/');
 });
 
 app.get('*', function(req, res) {

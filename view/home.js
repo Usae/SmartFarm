@@ -76,7 +76,7 @@ module.exports.home = function(navBar, menuLink, sensor, actuator) {
                             <td>0 ~ 40℃</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar ${bgtemp}" role="progressbar" style="width: ${temp/40*100}%" aria-valuemin="0" aria-valuemax="40">${temp}</div>
+                                    <div class="progress-bar ${bgtemp}" role="progressbar" style="width: ${temp/40*100}%" aria-valuemin="0" aria-valuemax="40">${temp}℃</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>
@@ -85,7 +85,7 @@ module.exports.home = function(navBar, menuLink, sensor, actuator) {
                             <td>0 ~ 60%</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar ${bghumid}" role="progressbar" style="width: ${humid/60*100}%" aria-valuemin="0" aria-valuemax="60">${humid}</div>
+                                    <div class="progress-bar ${bghumid}" role="progressbar" style="width: ${humid/60*100}%" aria-valuemin="0" aria-valuemax="60">${humid}%</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>
@@ -103,7 +103,7 @@ module.exports.home = function(navBar, menuLink, sensor, actuator) {
                             <td>0 ~ 200cm</td>
                             <td style="text-align: center;">
                                 <div class="progress" style="height: 25px; width: 400px">
-                                    <div class="progress-bar ${bgdist}" role="progressbar" style="width: ${dist/200*100}%" aria-valuemin="0" aria-valuemax="200">${dist}</div>
+                                    <div class="progress-bar ${bgdist}" role="progressbar" style="width: ${dist/200*100}%" aria-valuemin="0" aria-valuemax="200">${dist}cm</div>
                                 </div></td>
                             <td>${sUid}</td>
                         </tr>

@@ -26,6 +26,7 @@ module.exports = {
         let sensorLink = `<a class="nav-link" href="/sensor">센서</a>`;
         let actuatorLink = `<a class="nav-link" href="/actuator">액츄에이터</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
+        let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
         switch(menu) {
             case 1:     // Sensor 메뉴를 눌렀을 경우
                 sensorLink = `<a class="nav-link active" href="#">센서</a>`;
@@ -35,6 +36,9 @@ module.exports = {
                 break;
             case 3:     // User 메뉴를 눌렀을 경우
                 userLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
+                break;
+            case 4:     // Gallery 메뉴를 눌렸을 경우
+                galleryLink = `<a class="nav-link active" href="#">갤러리</a>`;
                 break;
             default:
                 break;
@@ -55,6 +59,9 @@ module.exports = {
                         <a class="dropdown-item" href="/user/register">등록(C)</a>
                         <a class="dropdown-item" href="/user/list">조회(R)</a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    ${galleryLink}
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>

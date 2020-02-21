@@ -19,7 +19,7 @@ module.exports.login = function() {
 			<div class="col-1"></div>
 			<div class="col-10">
 				<div class="jumbotron">
-					<a href="/"><img src="/greenlogo.png"></a>
+					<a href="/"><img src="/new3.png"></a>
 					<p><h2>로그인</h2></p>
 					<p><h5>강남 스마트팜 시스템을 이용하려면 로그인을 해주세요.</h5></p>
 				</div><br><br>

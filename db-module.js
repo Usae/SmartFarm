@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3').verbose(); 
 
-
 module.exports = {
     getAllDepts: function(callback) {
         let db = new sqlite3.Database("db/smartfarm.db");
@@ -97,37 +96,8 @@ module.exports = {
         stmt.finalize();
         db.close();
     },
-    insertSensor: function(temp, humid, cds, dist, uid, callback) {
-        let db = new sqlite3.Database("db/smartfarm.db");
-        let sql = `INSERT INTO sensor(temperature, humidity, cds, distance, uid) values (?,?,?,?,?)`;
-        let stmt = db.prepare(sql);
-        stmt.run(temp, humid, cds, dist, uid, function(err) {
-            if (err) {
-                console.error('insertSensor DB 오류', err); 
-                return;
-            }
-            callback();
-        });
-        stmt.finalize();
-        db.close();
-    },
-    insertActuator: function(redLED, greenLED, blueLED, relay , reason, uid, callback) {
-        let db = new sqlite3.Database("db/smartfarm.db");
-        let sql = `INSERT INTO actuator(redLED, greenLED, blueLED, relay , reason, uid) values (?,?,?,?,?,?)`;
-        let stmt = db.prepare(sql);
-        stmt.run(redLED, greenLED, blueLED, relay , reason, uid, function(err) {
-            if (err) {
-                console.error('insertActuator DB 오류', err);
-                return;
-            }
-            callback();
-        });
-        stmt.finalize();
-        db.close();
-    },
     getCurrentSensor: function(callback) {
         let db = new sqlite3.Database("db/smartfarm.db");
-        //let sql = `SELECT l.uid, l.name, r.name deptName, l.tel, strftime('%Y-%m-%d', regDate, 'localtime') ts FROM user l join dept r on l.deptId = r.did where uid=?`;
         let sql = `SELECT temperature, humidity, cds, distance, strftime('%Y-%m-%d %H:%M:%S', sensingTime, 'localtime') sTime, uid FROM sensor ORDER BY sid DESC LIMIT 1`;
         db.each(sql, function(err, row) {
             if (err) {
@@ -138,17 +108,44 @@ module.exports = {
         });
         db.close();
     },
-    getCurrentactuator: function(callback) {
+    insertSensor: function(temp, humid, cds, dist, uid, callback) {
         let db = new sqlite3.Database("db/smartfarm.db");
-        //let sql = `SELECT l.uid, l.name, r.name deptName, l.tel, strftime('%Y-%m-%d', regDate, 'localtime') ts FROM user l join dept r on l.deptId = r.did where uid=?`;
+        let sql = `INSERT INTO sensor(temperature, humidity, cds, distance, uid) values (?,?,?,?,?)`;
+        let stmt = db.prepare(sql);
+        stmt.run(temp, humid, cds, dist, uid, function(err) {
+            if (err) {
+                console.error('insertSensor DB 오류', err);
+                return;
+            }
+            callback();
+        });
+        stmt.finalize();
+        db.close();
+    },
+    getCurrentActuator: function(callback) {
+        let db = new sqlite3.Database("db/smartfarm.db");
         let sql = `SELECT redLED, greenLED, blueLED, relay, strftime('%Y-%m-%d %H:%M:%S', actionTime, 'localtime') aTime, reason, uid FROM actuator ORDER BY aid DESC LIMIT 1`;
         db.each(sql, function(err, row) {
             if (err) {
-                console.error('getCurrentSensor DB 오류', err);
+                console.error('getCurrentActuator DB 오류', err);
                 return;
             }
             callback(row);
         });
+        db.close();
+    },
+    insertActuator: function(redLED, greenLED, blueLED, relay, reason, uid, callback) {
+        let db = new sqlite3.Database("db/smartfarm.db");
+        let sql = `INSERT INTO actuator(redLED, greenLED, blueLED, relay, reason, uid) values (?,?,?,?,?,?)`;
+        let stmt = db.prepare(sql);
+        stmt.run(redLED, greenLED, blueLED, relay, reason, uid, function(err) {
+            if (err) {
+                console.error('insertActuator DB 오류', err);
+                return;
+            }
+            callback();
+        });
+        stmt.finalize();
         db.close();
     }
 }

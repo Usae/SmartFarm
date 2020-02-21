@@ -38,7 +38,7 @@ module.exports = {
         });
     },
     writeActuator: function(jsonData, callback) { 
-        const sp = new SerialPort("COM7", {     // 라즈베리파이에서는 /dev/ttyACM0
+        const sp = new SerialPort("COM6", {     // 라즈베리파이에서는 /dev/ttyACM0
             baudRate: 115200,
             autoOpen: false
         });
